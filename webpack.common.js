@@ -1,5 +1,5 @@
 import path from "node:path";
-import HtmlWebpackPlugin from 'html-webpack-plugin'
+import HtmlWebpackPlugin from "html-webpack-plugin";
 
 export default {
   entry: "./src/index.js",
@@ -8,15 +8,13 @@ export default {
     path: path.resolve(import.meta.dirname, "dist"),
     clean: true,
   },
-  plugins: [
-    new HtmlWebpackPlugin({ template: "./src/index.html" })
-  ],
+  plugins: [new HtmlWebpackPlugin({ template: "./src/index.html" })],
   module: {
     rules: [
       {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"],
-      }
-    ]
-  }
+      },
+    ],
+  },
 };
