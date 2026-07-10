@@ -21,7 +21,10 @@
   },
   "homepage": "https://github.com/XAJX179/webpack-template#readme",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "css-loader": "^7.1.4",
+    "eslint": "^10.6.0",
+    "globals": "^17.7.0",
     "html-webpack-plugin": "^5.6.7",
     "style-loader": "^4.0.0",
     "webpack": "^5.108.1",
