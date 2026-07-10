@@ -1,0 +1,32 @@
+{
+  "name": "webpack-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.prod.js",
+    "dev": "webpack serve --config webpack.dev.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XAJX179/webpack-template.git"
+  },
+  "keywords": [],
+  "author": "X_AJ_X",
+  "type": "module",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/XAJX179/webpack-template/issues"
+  },
+  "homepage": "https://github.com/XAJX179/webpack-template#readme",
+  "devDependencies": {
+    "css-loader": "^7.1.4",
+    "html-webpack-plugin": "^5.6.7",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.108.1",
+    "webpack-cli": "^7.1.0",
+    "webpack-dev-server": "^5.2.5",
+    "webpack-merge": "^6.0.1"
+  }
+}
