@@ -33,7 +33,7 @@ describe("gameboard", () => {
       expect(gameboard.place(ship, coord)).toBeFalsy();
     });
     test("place ship on valid cordinates", () => {
-      let coord = "b7";
+      let coord = "c7";
       expect(gameboard.place(ship, coord)).toBeTruthy();
     });
   });
