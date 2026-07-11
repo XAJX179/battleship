@@ -1,8 +1,15 @@
 export class Gameboard {
+  static EMPTY = 0;
+  static SHIP = 1;
+  static MISS = 2;
+  static HIT = 3;
+
   data;
+  allShips;
 
   constructor() {
-    this.data = new Array(100).fill(0);
+    this.data = new Array(100).fill(Gameboard.EMPTY);
+    this.allShips = [];
   }
 
   place(ship, coord) {
@@ -10,30 +17,29 @@ export class Gameboard {
     let valid = this.isIndexValid(index, ship);
     if (valid) {
       this.placeShip(index, ship);
-      console.log(this.data);
+      this.allShips.push(ship);
+
       return true;
     } else {
       return false;
     }
   }
 
-  // xAxis: A-J horizontal lanes
-  // yAxis: 1-10 vertical columns
+  // yAxis: A-J horizontal lanes
+  // xAxis: 1-10 vertical columns
   getIndex(coord) {
-    let xAxis = coord.charAt(0).toUpperCase();
-    let yAxis = Number(coord.slice(1));
+    let yAxis = coord.charAt(0).toUpperCase();
+    let xAxis = Number(coord.slice(1));
 
-    let code = xAxis.codePointAt(0);
+    let code = yAxis.codePointAt(0);
 
-    let xAxisIndex = code - 65; // read ASCII table  A's value is 65
-    xAxisIndex = xAxisIndex * 10;
+    let yAxisIndex = code - 65; // read ASCII table  A's value is 65
+    yAxisIndex = yAxisIndex * 10;
 
     // shift for 0 start index in arr
-    let yAxisIndex = yAxis - 1;
+    let xAxisIndex = xAxis - 1;
 
-    // console.log(xAxisIndex + yAxisIndex);
-    // console.log(this.data[xAxisIndex + yAxisIndex]);
-    return xAxisIndex + yAxisIndex;
+    return yAxisIndex + xAxisIndex;
   }
 
   isIndexValid(index, ship) {
@@ -71,8 +77,48 @@ export class Gameboard {
   }
 
   placeShip(index, ship) {
-    for (let i = 0; i < ship.length; i++) {
-      this.data[index + i] = 1;
+    if (ship.placedAt !== undefined) {
+      // removing ship from it's prev position if placed somewhere else
+      for (let i = 0; i < ship.length; i++) {
+        this.data[ship.placedAt + i] = Gameboard.EMPTY;
+      }
+      this.allShips.splice(this.allShips.indexOf(ship), 1);
     }
+
+    for (let i = 0; i < ship.length; i++) {
+      this.data[index + i] = Gameboard.SHIP;
+    }
+    ship.placedAt = index;
+  }
+
+  receiveAttack(coord) {
+    let index = this.getIndex(coord);
+    if (this.indexOutside(index)) {
+      throw Error("Index outside of board!");
+    }
+
+    let value = this.data[index];
+
+    if (value == Gameboard.SHIP) {
+      this.data[index] = Gameboard.HIT;
+      let attackedShip = this.getShipAt(index);
+      attackedShip.hit();
+      return true;
+    } else if (value == Gameboard.EMPTY) {
+      this.data[index] = Gameboard.MISS;
+    }
+    return false;
+  }
+
+  getShipAt(index) {
+    let value;
+    this.allShips.forEach((ship) => {
+      for (let i = 0; i < ship.length; i++) {
+        if (ship.placedAt + i == index) {
+          value = ship;
+        }
+      }
+    });
+    return value;
   }
 }

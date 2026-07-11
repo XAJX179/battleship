@@ -1,9 +1,11 @@
 export class Ship {
   length;
-  hitsTaken = 0;
+  hitsTaken;
+  placedAt;
 
   constructor(length) {
     this.length = Number(length);
+    this.hitsTaken = 0;
   }
 
   hit() {
