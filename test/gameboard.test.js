@@ -66,5 +66,25 @@ describe("gameboard", () => {
       let index = gameboard.getIndex(coord);
       expect(gameboard.getShipAt(index).hitsTaken).toBe(1);
     });
+    test("can check if all ships have not sunk", () => {
+      gameboard.receiveAttack("c8");
+      gameboard.receiveAttack("c9");
+      expect(gameboard.allShipsSunk()).toBeFalsy();
+    });
+    test("can check if all ships have sunk", () => {
+      gameboard.receiveAttack("c10");
+      expect(gameboard.allShipsSunk()).toBeTruthy();
+    });
+    test("can check if all ships have not sunk when new multiples ships placed", () => {
+      let ship2 = new Ship(3);
+      gameboard.place(ship2, "j1");
+      expect(gameboard.allShipsSunk()).toBeFalsy();
+    });
+    test("can check if all ships have sunk when new multiples ships placed", () => {
+      gameboard.receiveAttack("j1");
+      gameboard.receiveAttack("j2");
+      gameboard.receiveAttack("j3");
+      expect(gameboard.allShipsSunk()).toBeTruthy();
+    });
   });
 });

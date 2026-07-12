@@ -121,4 +121,8 @@ export class Gameboard {
     });
     return value;
   }
+
+  allShipsSunk() {
+    return !this.allShips.some((ship) => !ship.isSunk());
+  }
 }
