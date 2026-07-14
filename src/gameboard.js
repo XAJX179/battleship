@@ -4,10 +4,12 @@ export class Gameboard {
   static MISS = 2;
   static HIT = 3;
 
+  id;
   data;
   allShips;
 
   constructor() {
+    this.id = crypto.randomUUID();
     this.data = new Array(100).fill(Gameboard.EMPTY);
     this.allShips = [];
   }
