@@ -20,4 +20,8 @@ export class Ship {
   isSunk() {
     return this.hitsTaken >= this.length;
   }
+
+  isPlaced() {
+    return this.placedAt !== undefined;
+  }
 }

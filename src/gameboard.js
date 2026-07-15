@@ -137,4 +137,26 @@ export class Gameboard {
     }
     return false;
   }
+
+  randomCoordForShipPlacement(ship) {
+    let randomIndex;
+    let attempt = 0;
+    do {
+      attempt++;
+      if (attempt > 1000) {
+        throw Error(
+          "Exiting early cause could not find random valid value after many tries, refresh.",
+        );
+      }
+      randomIndex = Math.floor(Math.random() * this.data.length);
+    } while (!this.shipPlacableAt(randomIndex, ship));
+    return this.getCoord(randomIndex);
+  }
+
+  getCoord(index) {
+    return (
+      String.fromCodePoint(Math.floor((index - (index % 10)) / 10) + 65) +
+      String((index % 10) + 1)
+    );
+  }
 }

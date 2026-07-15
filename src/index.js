@@ -11,34 +11,54 @@ export const Game = (() => {
   function start() {
     player1 = new Player();
     player2 = new Player("computer");
-
-    let ship1 = new Ship(4);
-    player1.gameboard.place(ship1, "a1");
-    let ship2 = new Ship(3);
-    player1.gameboard.place(ship2, "c1");
-
-    let ship3 = new Ship(4);
-    player2.gameboard.place(ship3, "a1");
-    let ship4 = new Ship(3);
-    player2.gameboard.place(ship4, "c1");
-
     display = new Display();
 
     display.drawBoard(player1.gameboard, player1.type);
     display.drawBoard(player2.gameboard, player2.type);
 
-    display.drawShips(player1.gameboard);
+    let ship11 = new Ship(5);
+    player2.gameboard.place(
+      ship11,
+      player2.gameboard.randomCoordForShipPlacement(ship11),
+    );
+    let ship12 = new Ship(4);
+    player2.gameboard.place(
+      ship12,
+      player2.gameboard.randomCoordForShipPlacement(ship12),
+    );
+    let ship13 = new Ship(3);
+    player2.gameboard.place(
+      ship13,
+      player2.gameboard.randomCoordForShipPlacement(ship13),
+    );
+    let ship14 = new Ship(3);
+    player2.gameboard.place(
+      ship14,
+      player2.gameboard.randomCoordForShipPlacement(ship14),
+    );
+    let ship15 = new Ship(2);
+    player2.gameboard.place(
+      ship15,
+      player2.gameboard.randomCoordForShipPlacement(ship15),
+    );
 
-    player1.gameboard.receiveAttack("a1");
-    player1.gameboard.receiveAttack("b1");
-    player1.gameboard.receiveAttack("c1");
-    player1.gameboard.receiveAttack("d1");
-    player1.gameboard.receiveAttack("d2");
+    let ships = [];
+    ships.push(new Ship(5));
+    ships.push(new Ship(4));
+    ships.push(new Ship(3));
+    ships.push(new Ship(3));
+    ships.push(new Ship(2));
 
-    display.drawHitAndMiss(player1.gameboard);
-    display.drawHitAndMiss(player2.gameboard);
+    const shipPlacedPromise = display.promptShipPlacement(
+      player1.gameboard,
+      ships,
+    );
 
-    display.setBoardEvent(player2.gameboard);
+    shipPlacedPromise.then(() => {
+      display.drawShips(player1.gameboard);
+
+      display.setBoardEvent(player2.gameboard);
+    });
   }
 
   function playComputerTurn() {

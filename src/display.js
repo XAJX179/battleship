@@ -118,7 +118,43 @@ export class Display {
   };
 
   declareWinner(player) {
-    let message = document.querySelector("#message");
-    message.textContent = player.type + " player Won!";
+    let text = player.type + " player Won!";
+    this.sendMessage(text);
   }
+
+  sendMessage(text) {
+    let message = document.querySelector("#message");
+    message.textContent = text;
+  }
+
+  promptShipPlacement(board, ships) {
+    return new Promise((resolve) => {
+      console.log(ships);
+      let grid = document.querySelector(`.board[data-id="${board.id}"]`);
+      console.log(grid);
+      const listener = (e) => {
+        this.shipPlaceInput(e, board, ships);
+        if (ships.length == 0) {
+          grid.removeEventListener("click", listener);
+          resolve();
+        }
+      };
+      grid.addEventListener("click", listener);
+    });
+  }
+
+  shipPlaceInput = (e, board, ships) => {
+    console.log(e);
+    console.log(e.target.dataset.coord);
+    let coord = e.target.dataset.coord;
+    if (coord !== undefined) {
+      let ship = ships[0];
+      let index = board.getIndex(coord);
+      if (board.shipPlacableAt(index, ship)) {
+        board.place(ship, coord);
+        ships.shift();
+        this.drawShips(board);
+      }
+    }
+  };
 }
