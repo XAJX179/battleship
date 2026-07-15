@@ -44,7 +44,11 @@ export const Game = (() => {
   function playComputerTurn() {
     player2.autoPlayTurn();
     display.drawHitAndMiss(player1.gameboard);
-    display.setBoardEvent(player2.gameboard);
+    if (!player1.gameboard.allShipsSunk()) {
+      display.setBoardEvent(player2.gameboard);
+    } else {
+      display.declareWinner(player2);
+    }
   }
 
   function getPlayer1() {
@@ -58,4 +62,3 @@ export const Game = (() => {
 })();
 
 Game.start();
-console.log(Game);

@@ -25,12 +25,10 @@ export class Player {
       randomIndex = Math.floor(Math.random() * data.length);
     } while (!enemy.gameboard.canAttackAt(randomIndex));
 
-    console.log(randomIndex);
     let coord =
       String.fromCodePoint(
         Math.floor((randomIndex - (randomIndex % 10)) / 10) + 65,
       ) + String((randomIndex % 10) + 1);
-    console.log(coord);
     enemy.gameboard.receiveAttack(coord);
   }
 }

@@ -103,16 +103,22 @@ export class Display {
   handleBoardClick = (e) => {
     if (e.target.classList.contains("cell")) {
       let coord = e.target.dataset.coord;
-      console.log(coord);
-      console.log(Game);
       let index = Game.getPlayer1().gameboard.getIndex(coord);
-      console.log(index);
       if (Game.getPlayer2().gameboard.canAttackAt(index)) {
         Game.getPlayer2().gameboard.receiveAttack(coord);
         this.drawHitAndMiss(Game.getPlayer2().gameboard);
         e.currentTarget.removeEventListener("click", this.handleBoardClick);
-        Game.playComputerTurn();
+        if (!Game.getPlayer2().gameboard.allShipsSunk()) {
+          Game.playComputerTurn();
+        } else {
+          this.declareWinner(Game.getPlayer1());
+        }
       }
     }
   };
+
+  declareWinner(player) {
+    let message = document.querySelector("#message");
+    message.textContent = player.type + " player Won!";
+  }
 }
