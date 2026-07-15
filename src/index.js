@@ -42,7 +42,7 @@ export const Game = (() => {
   }
 
   function playComputerTurn() {
-    player2.autoPlayTurn();
+    player2.autoPlayTurn(player1);
     display.drawHitAndMiss(player1.gameboard);
     if (!player1.gameboard.allShipsSunk()) {
       display.setBoardEvent(player2.gameboard);

@@ -1,5 +1,4 @@
 import { Gameboard } from "./gameboard.js";
-import { Game } from "./index.js";
 
 export class Player {
   gameboard;
@@ -10,10 +9,9 @@ export class Player {
     this.type = type;
   }
 
-  autoPlayTurn() {
+  autoPlayTurn(enemy) {
     const data = this.gameboard.data;
     let randomIndex;
-    let enemy = Game.getPlayer1();
     let attempt = 0;
     do {
       attempt++;
