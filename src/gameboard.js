@@ -62,20 +62,21 @@ export class Gameboard {
 
   shipPlacableAt(index, ship) {
     let invalid = false;
+    let reachLineEndInvalid = false;
     for (let i = 0; i < ship.length; i++) {
-      if (invalid) {
+      if (invalid || reachLineEndInvalid) {
         return false;
       }
       if ((index + i) % 10 === 9) {
         // reached end
-        invalid = true;
+        reachLineEndInvalid = true;
       }
       if (this.data[index + i] !== 0) {
         // index is not empty
         invalid = true;
       }
     }
-    return true;
+    return !invalid;
   }
 
   placeShip(index, ship) {
