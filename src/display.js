@@ -3,6 +3,8 @@ import { Game } from "./index.js";
 
 export class Display {
   boardsList;
+  lastHoveredCells = [];
+
   constructor() {
     this.boardsList = document.querySelector("ul.boards");
   }
@@ -132,19 +134,24 @@ export class Display {
       console.log(ships);
       let grid = document.querySelector(`.board[data-id="${board.id}"]`);
       console.log(grid);
-      const listener = (e) => {
+      const clickListener = (e) => {
         this.shipPlaceInput(e, board, ships);
         if (ships.length == 0) {
-          grid.removeEventListener("click", listener);
+          grid.removeEventListener("click", clickListener);
+          grid.removeEventListener("mouseover", hoverListener);
           resolve();
         }
       };
-      grid.addEventListener("click", listener);
+
+      const hoverListener = (e) => {
+        this.shipPlaceInputHover(e, board, ships);
+      };
+      grid.addEventListener("click", clickListener);
+      grid.addEventListener("mouseover", hoverListener);
     });
   }
 
   shipPlaceInput = (e, board, ships) => {
-    console.log(e);
     console.log(e.target.dataset.coord);
     let coord = e.target.dataset.coord;
     if (coord !== undefined) {
@@ -157,4 +164,34 @@ export class Display {
       }
     }
   };
+
+  shipPlaceInputHover(e, board, ships) {
+    console.dir(e.target);
+    console.log(e.target.dataset.coord);
+    let coord = e.target.dataset.coord;
+    if (coord !== undefined) {
+      this.lastHoveredCells.forEach((cell) => {
+        cell.style.border = "0px";
+      });
+      let ship = ships[0];
+      let index = board.getIndex(coord);
+      let color;
+      if (board.shipPlacableAt(index, ship)) {
+        color = "green";
+      } else {
+        color = "red";
+      }
+      let element = e.target;
+      let cells = [];
+      for (let i = 0; i < ship.length; i++) {
+        if (element == null) {
+          break;
+        }
+        element.style.border = "1px solid " + color;
+        cells.push(element);
+        element = element.nextElementSibling;
+      }
+      this.lastHoveredCells = cells;
+    }
+  }
 }

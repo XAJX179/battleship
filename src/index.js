@@ -49,12 +49,14 @@ export const Game = (() => {
     ships.push(new Ship(3));
     ships.push(new Ship(2));
 
+    display.sendMessage("place ships on your board");
     const shipPlacedPromise = display.promptShipPlacement(
       player1.gameboard,
       ships,
     );
 
     shipPlacedPromise.then(() => {
+      display.sendMessage("game started! attack!");
       display.drawShips(player1.gameboard);
 
       display.setBoardEvent(player2.gameboard);
