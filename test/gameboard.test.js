@@ -83,6 +83,12 @@ describe("gameboard", () => {
     test("can attack ship", () => {
       expect(gameboard.canAttackAt("j1")).toBeTruthy();
     });
+    test("get random ship placement index", () => {
+      expect(gameboard.randomCoordForShipPlacement(4)).toMatch(/[A-Z][0-9]/);
+    });
+    test("get random ship placement index", () => {
+      expect(gameboard.getCoord(0)).toMatch(/A1/);
+    });
     test("can check if all ships have sunk when new multiples ships placed", () => {
       gameboard.receiveAttack("j1");
       gameboard.receiveAttack("j2");
