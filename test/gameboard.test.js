@@ -80,6 +80,9 @@ describe("gameboard", () => {
       gameboard.place(ship2, "j1");
       expect(gameboard.allShipsSunk()).toBeFalsy();
     });
+    test("can attack ship", () => {
+      expect(gameboard.canAttackAt("j1")).toBeTruthy();
+    });
     test("can check if all ships have sunk when new multiples ships placed", () => {
       gameboard.receiveAttack("j1");
       gameboard.receiveAttack("j2");

@@ -1,4 +1,5 @@
 import { Gameboard } from "./gameboard.js";
+import { Game } from "./index.js";
 
 export class Display {
   boardsList;
@@ -48,9 +49,7 @@ export class Display {
 
   drawShips(board) {
     let grid = document.querySelector(`.board[data-id="${board.id}"]`);
-    console.dir(grid);
     let lines = grid.children;
-    console.log(lines);
     for (let i = 0; i < 10; i++) {
       let line = lines[i];
       let cells = line.children;
@@ -65,9 +64,7 @@ export class Display {
 
   drawHitAndMiss(board) {
     let grid = document.querySelector(`.board[data-id="${board.id}"]`);
-    console.dir(grid);
     let lines = grid.children;
-    console.log(lines);
     for (let i = 0; i < 10; i++) {
       let line = lines[i];
       let cells = line.children;
@@ -91,10 +88,31 @@ export class Display {
         let cellDiv = document.createElement("div");
         cellDiv.classList.add("cell");
         cellDiv.style.backgroundColor = `rgba(0,0,255,${Math.random() * 0.2})`;
-        // cellDiv.textContent = board.data[i * 10 + y];
+        cellDiv.dataset.coord = String.fromCodePoint(i + 65) + (y + 1);
         line.append(cellDiv);
       }
       grid.append(line);
     }
   }
+
+  setBoardEvent(board) {
+    let grid = document.querySelector(`.board[data-id="${board.id}"]`);
+    grid.addEventListener("click", this.handleBoardClick);
+  }
+
+  handleBoardClick = (e) => {
+    if (e.target.classList.contains("cell")) {
+      let coord = e.target.dataset.coord;
+      console.log(coord);
+      console.log(Game);
+      let index = Game.getPlayer1().gameboard.getIndex(coord);
+      console.log(index);
+      if (Game.getPlayer2().gameboard.canAttackAt(index)) {
+        Game.getPlayer2().gameboard.receiveAttack(coord);
+        this.drawHitAndMiss(Game.getPlayer2().gameboard);
+        e.currentTarget.removeEventListener("click", this.handleBoardClick);
+        Game.playComputerTurn();
+      }
+    }
+  };
 }

@@ -3,10 +3,14 @@ import { Ship } from "./ship.js";
 import { Display } from "./display.js";
 import "./style.css";
 
-const Game = (() => {
+export const Game = (() => {
+  let player1;
+  let player2;
+  let display;
+
   function start() {
-    let player1 = new Player();
-    let player2 = new Player("computer");
+    player1 = new Player();
+    player2 = new Player("computer");
 
     let ship1 = new Ship(4);
     player1.gameboard.place(ship1, "a1");
@@ -18,7 +22,7 @@ const Game = (() => {
     let ship4 = new Ship(3);
     player2.gameboard.place(ship4, "c1");
 
-    let display = new Display();
+    display = new Display();
 
     display.drawBoard(player1.gameboard, player1.type);
     display.drawBoard(player2.gameboard, player2.type);
@@ -32,9 +36,26 @@ const Game = (() => {
     player1.gameboard.receiveAttack("d2");
 
     display.drawHitAndMiss(player1.gameboard);
+    display.drawHitAndMiss(player2.gameboard);
+
+    display.setBoardEvent(player2.gameboard);
   }
 
-  return { start };
+  function playComputerTurn() {
+    player2.autoPlayTurn();
+    display.drawHitAndMiss(player1.gameboard);
+    display.setBoardEvent(player2.gameboard);
+  }
+
+  function getPlayer1() {
+    return player1;
+  }
+  function getPlayer2() {
+    return player2;
+  }
+
+  return { start, playComputerTurn, getPlayer1, getPlayer2 };
 })();
 
 Game.start();
+console.log(Game);

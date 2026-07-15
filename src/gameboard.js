@@ -127,4 +127,14 @@ export class Gameboard {
   allShipsSunk() {
     return !this.allShips.some((ship) => !ship.isSunk());
   }
+
+  canAttackAt(index) {
+    if (
+      this.data[index] !== Gameboard.HIT &&
+      this.data[index] !== Gameboard.MISS
+    ) {
+      return true;
+    }
+    return false;
+  }
 }

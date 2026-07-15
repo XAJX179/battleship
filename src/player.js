@@ -1,4 +1,5 @@
 import { Gameboard } from "./gameboard.js";
+import { Game } from "./index.js";
 
 export class Player {
   gameboard;
@@ -7,5 +8,29 @@ export class Player {
   constructor(type = "real", gameboard = new Gameboard()) {
     this.gameboard = gameboard;
     this.type = type;
+  }
+
+  autoPlayTurn() {
+    const data = this.gameboard.data;
+    let randomIndex;
+    let enemy = Game.getPlayer1();
+    let attempt = 0;
+    do {
+      attempt++;
+      if (attempt > 1000) {
+        throw Error(
+          "Exiting early cause could not find random valid value after many tries, refresh.",
+        );
+      }
+      randomIndex = Math.floor(Math.random() * data.length);
+    } while (!enemy.gameboard.canAttackAt(randomIndex));
+
+    console.log(randomIndex);
+    let coord =
+      String.fromCodePoint(
+        Math.floor((randomIndex - (randomIndex % 10)) / 10) + 65,
+      ) + String((randomIndex % 10) + 1);
+    console.log(coord);
+    enemy.gameboard.receiveAttack(coord);
   }
 }
